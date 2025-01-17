@@ -8,7 +8,7 @@
 <link href="presentation_files/libs/quarto-html/light-border.css" rel="stylesheet">
 <link href="presentation_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
 <link href="presentation_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.4.550">
+  <meta name="generator" content="quarto-1.4.555">
 
   <meta name="author" content="Chris Grieves">
   <title>A Story of Revisions to U.S. Employment</title>
@@ -337,6 +337,11 @@ Chris Grieves
 </div>
 
 </section>
+<section>
+<section id="disclaimer-thoughts-and-opinions-are-my-own-and-are-not-those-of-the-bureau-of-labor-statistics" class="title-slide slide level1 center">
+<h1>Disclaimer: Thoughts and opinions are my own and are not those of the Bureau of Labor Statistics</h1>
+
+</section>
 <section id="u.s.-employment" class="slide level2">
 <h2>U.S. Employment</h2>
 <p>U.S. Employment is measured by the Bureau of Labor Statistics (BLS) in two ways:</p>
@@ -347,12 +352,12 @@ Chris Grieves
 </ul></li>
 <li>The Quarterly Census of Employment and Wages (QCEW)
 <ul>
-<li>Large administrative program run by the states to collect employment and wages via the Unemployment Insurance (UI) program</li>
+<li>Large administrative program that collects employment and wages via each state’s Unemployment Insurance (UI) program</li>
 </ul></li>
 </ul>
 </section>
 <section id="why-two-measurements" class="slide level2">
-<h2>Why Two measurements?</h2>
+<h2>Why two measurements?</h2>
 <ul>
 <li>QCEW is a <strong>census</strong>
 <ul>
@@ -363,7 +368,7 @@ Chris Grieves
 <li>CES is produced monthly by a survey
 <ul>
 <li><strong>survey</strong> - using random sampling to gather information about a population.</li>
-<li>Only one month lag!</li>
+<li>Only one month lag! - gets users information faster</li>
 <li>Subject to sampling error</li>
 </ul></li>
 </ul>
@@ -371,33 +376,75 @@ Chris Grieves
 <section id="who-uses-this-data" class="slide level2">
 <h2>Who uses this data?</h2>
 <ul>
-<li><strong>The Federal Reserve relies on this information to set interest rate and make other important economic decisions</strong></li>
-<li>If anyone paid attention to inflation over the last few years, this was an economic indicator to pay attention to</li>
+<li>The Federal Reserve relies on this information to set interest rate and make other important economic decisions</li>
+<li>States use it to make decisions about their own policies</li>
 </ul>
 </section>
-<section id="qcew" class="slide level2">
-<h2>QCEW</h2>
+<section id="qcew-revisions" class="slide level2">
+<h2>QCEW Revisions</h2>
 <ul>
-<li>Administrative programs are still subject to error.
-<ul>
-<li>Late data</li>
-<li>Erroneous data</li>
-</ul></li>
+<li>QCEW data for a given quarter released ~5 months after that quarter</li>
+<li>Every release previous quarters data are updated</li>
+<li>We will call each months subsequent releases cut 1, cut 2, and so on..</li>
+<li>We call the difference between cuts, the QCEW revision</li>
+<li>QCEW Revisions can be found on the BLS website <a href="https://www.bls.gov/cew/revisions/">here</a></li>
+<li>We will care about cut 1 and cut 2 in this presentation</li>
 </ul>
 </section>
 <section id="benchmarking" class="slide level2">
 <h2>Benchmarking</h2>
 <ul>
-<li>CES <strong>Benchmarks</strong> to QCEW
+<li>CES <strong>Benchmarks</strong> to QCEW for the month of March of the previous year.
 <ul>
 <li><strong>Benchmarking</strong> is the process of setting a value to a perceived more credible value.</li>
 </ul></li>
+<li>CES releases two benchmark revisions, i.e.&nbsp;“How far away from the ‘truth’ am I?”:
+<ul>
+<li>Preliminary Benchmark in August using cut 1 of the QCEW</li>
+<li>A Final Benchmark in February using cut 2 of the QCEW</li>
+</ul></li>
+<li>My question: How do QCEW revisions affect the differences between the Preliminary and Final Benchmark CES revision?</li>
 </ul>
 </section>
-<section id="qcew-revisions" class="slide level2">
-<h2>QCEW Revisions</h2>
+<section id="ces-revisions" class="slide level2">
+<h2>CES Revisions</h2>
+<ul>
+<li>Final Revisions on BLS website <a href="https://www.bls.gov/web/empsit/cestn.htm#Revisions">here</a></li>
+<li>Preliminary Revisions
+<ul>
+<li>Current year’s can be found <a href="https://www.bls.gov/web/empsit/cesprelbmk.htm">here</a></li>
+<li>Also needed to gather old revisions using the <a href="http://wayback.archive.org/">Wayback Machine</a> to find archived Preliminary Benchmark announcements since they overwrite them each year.</li>
+</ul></li>
+</ul>
+</section>
+<section id="ces-revisions-1" class="slide level2">
+<h2>CES Revisions</h2>
 
-<img data-src="presentation_files/figure-revealjs/unnamed-chunk-2-1.png" width="960" class="r-stretch"></section>
+<img data-src="presentation_files/figure-revealjs/unnamed-chunk-2-1.png" width="960" class="r-stretch"></section></section>
+<section>
+<section id="a-quantity-of-interest-would-be-to-look-at-the-difference-final-revision---preliminary-revision" class="title-slide slide level1 center">
+<h1>A Quantity of interest would be to look at the difference Final Revision - Preliminary Revision</h1>
+
+</section>
+<section id="final---prelim" class="slide level2">
+<h2>Final - Prelim</h2>
+
+<img data-src="presentation_files/figure-revealjs/unnamed-chunk-3-1.png" width="960" class="r-stretch"></section>
+<section id="why-am-i-interested-in-this-difference" class="slide level2">
+<h2>Why am I interested in this difference?</h2>
+<ul>
+<li>If CES uses cut 1 of QCEW for the Preliminary Benchmark Revision and cut 2 for the Final Benchmark Revision, we should expect this difference to correlate with QCEW revisions.</li>
+</ul>
+</section></section>
+<section>
+<section id="now-lets-consider-qcew" class="title-slide slide level1 center">
+<h1>Now Let’s Consider QCEW</h1>
+
+</section>
+<section id="qcew-levels-look-like-this" class="slide level2">
+<h2>QCEW Levels Look Like This</h2>
+
+<img data-src="presentation_files/figure-revealjs/unnamed-chunk-4-1.png" width="960" class="r-stretch"></section></section>
 <section>
 <section id="ok-those-lines-look-really-close-why-should-i-care" class="title-slide slide level1 center">
 <h1>OK, those lines look really close, why should I care?</h1>
@@ -406,11 +453,78 @@ Chris Grieves
 <section id="if-we-look-at-the-difference-between-cut-2-and-cut-1-we-get" class="slide level2">
 <h2>If we look at the difference between cut 2 and cut 1, we get…</h2>
 
-<img data-src="presentation_files/figure-revealjs/unnamed-chunk-3-1.png" width="960" class="r-stretch"></section>
+<img data-src="presentation_files/figure-revealjs/unnamed-chunk-5-1.png" width="960" class="r-stretch"></section>
 <section id="revisions-are-strictly-positive-starting-in-2021" class="slide level2">
 <h2>Revisions are strictly positive starting in 2021</h2>
 
-<img data-src="presentation_files/figure-revealjs/unnamed-chunk-4-1.png" width="960" class="r-stretch"><div class="quarto-auto-generated-content">
+<img data-src="presentation_files/figure-revealjs/unnamed-chunk-6-1.png" width="960" class="r-stretch"></section>
+<section id="section" class="slide level2">
+<h2></h2>
+<ul>
+<li>If I overlay the difference between Prelim and Final CES revision</li>
+<li><span style="color:red;">red</span> points are CES differences. <strong>Black</strong> just to highlight March.</li>
+</ul>
+
+<img data-src="presentation_files/figure-revealjs/unnamed-chunk-7-1.png" width="960" class="r-stretch"></section>
+<section id="section-1" class="slide level2">
+<h2></h2>
+<ul>
+<li>We can make a good guess at the change in revision from Prelim to Final for this missing point</li>
+</ul>
+
+<img data-src="presentation_files/figure-revealjs/unnamed-chunk-8-1.png" width="960" class="r-stretch"></section>
+<section id="this-point-is-also-stands-out-june-2022" class="slide level2">
+<h2>This point is also stands out (June 2022)</h2>
+
+<img data-src="presentation_files/figure-revealjs/unnamed-chunk-9-1.png" width="960" class="r-stretch"></section>
+<section id="philadelphia-fed" class="slide level2">
+<h2>Philadelphia Fed</h2>
+<ul>
+<li><p>The Philadelphia Fed does quarterly benchmarking to cut 1 of the QCEW</p></li>
+<li><p>In June 2022 they claimed “In the aggregate, 10,500 net new jobs were added during the period rather than the 1,121,500 jobs estimated by the sum of the states; the U.S. CES estimated net growth of 1,047,000 jobs for the period.”</p></li>
+<li><p>Thats a claim that BLS was off by 1 million jobs!</p></li>
+<li><p><a href="https://www.philadelphiafed.org/-/media/frbp/assets/surveys-and-data/benchmark-revisions/2022/early-benchmark-2022-q2-report.pdf">June 2022 Report</a></p></li>
+</ul>
+</section>
+<section id="this-outlier-contributed-greatly-to-the-error-in-the-fed-report" class="slide level2">
+<h2>This outlier contributed greatly to the error in the fed report</h2>
+
+<img data-src="presentation_files/figure-revealjs/unnamed-chunk-10-1.png" width="960" class="r-stretch"></section>
+<section id="june-2022-outlier" class="slide level2">
+<h2>June 2022 Outlier</h2>
+<ul>
+<li>Further differences between the Fed’s number and CES explained by:
+<ul>
+<li>subsequent revisions in the QCEW</li>
+<li>seasonal adjustment</li>
+</ul></li>
+<li>The outlier itself was caused by employers submitting erroneous “third month zeros” when submitting Unemployment Insurance tax data</li>
+</ul>
+</section>
+<section id="june-2022-outlier-1" class="slide level2">
+<h2>June 2022 Outlier</h2>
+<ul>
+<li>No smoking gun found but possibilities include:
+<ul>
+<li>Calendar effects
+<ul>
+<li>When do employees get their paychecks and are they getting counted for that month?</li>
+</ul></li>
+<li>Payroll provider issues</li>
+</ul></li>
+</ul>
+</section>
+<section id="conclusions" class="slide level2">
+<h2>Conclusions</h2>
+<ul>
+<li>Administrative data can have its own risks</li>
+<li>Revisions to the QCEW impact the reliability of the products created by its users</li>
+</ul>
+</section>
+<section id="presentation-materials" class="slide level2">
+<h2>Presentation Materials</h2>
+<p>Git repo: https://github.com/kerr14333/employment_revisions Slides: https://rpubs.com/kerr14333/employment-revisions</p>
+<div class="quarto-auto-generated-content">
 <div class="footer footer-default">
 
 </div>
@@ -627,42 +741,80 @@ Chris Grieves
       });
     </script>
     
+
     <script>
+
       // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+
       // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+
       // slide changes (different for each slide format).
+
       (function () {
+
         // dispatch for htmlwidgets
+
         function fireSlideEnter() {
+
           const event = window.document.createEvent("Event");
+
           event.initEvent("slideenter", true, true);
+
           window.document.dispatchEvent(event);
+
         }
+
+    
 
         function fireSlideChanged(previousSlide, currentSlide) {
+
           fireSlideEnter();
 
+    
+
           // dispatch for shiny
+
           if (window.jQuery) {
+
             if (previousSlide) {
+
               window.jQuery(previousSlide).trigger("hidden");
+
             }
+
             if (currentSlide) {
+
               window.jQuery(currentSlide).trigger("shown");
+
             }
+
           }
+
         }
+
+    
 
         // hookup for slidy
+
         if (window.w3c_slidy) {
+
           window.w3c_slidy.add_observer(function (slide_num) {
+
             // slide_num starts at position 1
+
             fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+
           });
+
         }
 
+    
+
       })();
+
     </script>
+
+    
 
     <script id="quarto-html-after-body" type="application/javascript">
     window.document.addEventListener("DOMContentLoaded", function (event) {
@@ -740,6 +892,24 @@ Chris Grieves
         // clear code selection
         e.clearSelection();
       });
+        var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+        var mailtoRegex = new RegExp(/^mailto:/);
+          var filterRegex = new RegExp('/' + window.location.host + '/');
+        var isInternal = (href) => {
+            return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+        }
+        // Inspect non-navigation links and adorn them if external
+     	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+        for (var i=0; i<links.length; i++) {
+          const link = links[i];
+          if (!isInternal(link.href)) {
+            // undo the damage that might have been done by quarto-nav.js in the case of
+            // links that we want to consider external
+            if (link.dataset.originalHref !== undefined) {
+              link.href = link.dataset.originalHref;
+            }
+          }
+        }
       function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
         const config = {
           allowHTML: true,
@@ -776,7 +946,11 @@ Chris Grieves
           try { href = new URL(href).hash; } catch {}
           const id = href.replace(/^#\/?/, "");
           const note = window.document.getElementById(id);
-          return note.innerHTML;
+          if (note) {
+            return note.innerHTML;
+          } else {
+            return "";
+          }
         });
       }
       const findCites = (el) => {

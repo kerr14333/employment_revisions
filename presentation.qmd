@@ -5,12 +5,11 @@ format: revealjs
 editor: visual
 ---
 
-
 ```{r, include=F}
 #load libraries
 library(tidyverse)
 library(scales)
-
+library(ggforce)
 #pulled from here
 #https://www.bls.gov/cew/revisions/qcew-revisions.csv
 #get revisions to the QCEW
@@ -49,45 +48,101 @@ qcew_revisions <- qcew_revisions %>%
                                          format="%Y-%m-%d"))
 ```
 
+# Disclaimer: Thoughts and opinions are my own and are not those of the Bureau of Labor Statistics
+
 ## U.S. Employment
 
 U.S. Employment is measured by the Bureau of Labor Statistics (BLS) in two ways:
 
-* The Current Employment Statistics (CES) Survey
-  * Monthly employment survey asking a sample of employers "How many people do you have on your payroll?"
-* The Quarterly Census of Employment and Wages (QCEW)
-  * Large administrative program run by the states to collect employment and wages via the Unemployment Insurance (UI) program
-  
-## Why Two measurements?
+-   The Current Employment Statistics (CES) Survey
+    -   Monthly employment survey asking a sample of employers "How many people do you have on your payroll?"
+-   The Quarterly Census of Employment and Wages (QCEW)
+    -   Large administrative program that collects employment and wages via each state's Unemployment Insurance (UI) program
 
-* QCEW is a **census**
-  * **census** - complete count of a population
-  * Problem is that it is on a 4 month lag.
-  * More realistically it is an 8 month lag.
-* CES is produced monthly by a survey
-  * **survey** - using random sampling to gather information about a population.
-  * Only one month lag!
-  * Subject to sampling error
-  
-  
+## Why two measurements?
+
+-   QCEW is a **census**
+    -   **census** - complete count of a population
+    -   Problem is that it is on a 4 month lag.
+    -   More realistically it is an 8 month lag.
+-   CES is produced monthly by a survey
+    -   **survey** - using random sampling to gather information about a population.
+    -   Only one month lag! - gets users information faster
+    -   Subject to sampling error
+
 ## Who uses this data?
 
-* **The Federal Reserve relies on this information to set interest rate and make other important economic decisions**
-* If anyone paid attention to inflation over the last few years, this was an economic indicator to pay attention to
+-   The Federal Reserve relies on this information to set interest rate and make other important economic decisions
+-   States use it to make decisions about their own policies
 
+## QCEW Revisions
 
-## QCEW
+- QCEW data for a given quarter released ~5 months after that quarter 
+- Every release previous quarters data are updated
+- We will call each months subsequent releases cut 1, cut 2, and so on..
+- We call the difference between cuts, the QCEW revision
+-   QCEW Revisions can be found on the BLS website [here](https://www.bls.gov/cew/revisions/)
+-   We will care about cut 1 and cut 2 in this presentation
 
-* Administrative programs are still subject to error.
-  * Late data
-  * Erroneous data
 
 ## Benchmarking
 
-* CES **Benchmarks** to QCEW
-  * **Benchmarking** is the process of setting a value to a perceived more credible value.
+-   CES **Benchmarks** to QCEW for the month of March of the previous year.
+    -   **Benchmarking** is the process of setting a value to a perceived more credible value.
+-   CES releases two benchmark revisions, i.e. "How far away from the 'truth' am I?":
+    -   Preliminary Benchmark in August using cut 1 of the QCEW
+    -   A Final Benchmark in February using cut 2 of the QCEW
+-   My question: How do QCEW revisions affect the differences between the Preliminary and Final Benchmark CES revision?
 
-## QCEW Revisions
+
+## CES Revisions
+
+-   Final Revisions on BLS website [here](https://www.bls.gov/web/empsit/cestn.htm#Revisions)
+-   Preliminary Revisions
+    -   Current year's can be found [here](https://www.bls.gov/web/empsit/cesprelbmk.htm)
+    -   Also needed to gather old revisions using the [Wayback Machine](http://wayback.archive.org/) to find archived Preliminary Benchmark announcements since they overwrite them each year.
+
+## CES Revisions
+
+```{r echo=FALSE}
+
+ces_revisions %>% 
+  select(-March,-diff) %>% 
+  pivot_longer(c("Prelim","Final")) %>% 
+  mutate(name=factor(name,levels=c("Prelim","Final"))) %>% 
+  ggplot(aes(x=date,y=value,fill=name)) +
+  geom_bar(stat="identity",position="dodge") +
+  scale_y_continuous(n.breaks=6)+
+  scale_x_date(breaks = seq.Date(mdy("1-1-2015"),to = mdy("1-1-2024"),by="year"),date_labels = "%Y")+
+  labs(title="CES Prelim and Final Benchmark Revisions (in thousands)",
+       y="Revision (in thousands)",
+       x="Year",
+       fill="Revision") + 
+  theme(plot.title = element_text(hjust = 0.5)) 
+```
+
+# A Quantity of interest would be to look at the difference Final Revision - Preliminary Revision
+
+## Final - Prelim
+
+```{r echo=F}
+ces_revisions %>% 
+  ggplot(aes(x=date,y=diff/1000)) +
+  geom_bar(stat="identity",fill="blue") + 
+  scale_x_date(breaks = seq.Date(mdy("1-1-2015"),to = mdy("1-1-2024"),by="year"),date_labels = "%Y")+
+  labs(title="Final Minus Prelim Benchmark Revisions",
+       y="Difference (in thousands)",
+       x="Year") + 
+  theme(plot.title = element_text(hjust = 0.5)) 
+```
+## Why am I interested in this difference?
+
+- If CES uses cut 1 of QCEW for the Preliminary Benchmark Revision and cut 2 for the Final Benchmark Revision, we should expect this difference to correlate with QCEW revisions.
+
+
+# Now Let's Consider QCEW
+
+## QCEW Levels Look Like This
 
 ```{r, echo=F}
 ###cut1 cut2 plot
@@ -97,10 +152,12 @@ qcew_revisions %>%
   geom_line() +
   scale_y_continuous( labels= scales::comma_format(),
                       n.breaks = 8 ) + 
+  scale_x_date(breaks = seq.Date(mdy("1-1-2015"),to = mdy("1-1-2024"),by="year"),date_labels = "%Y") +
   labs(title="Initial QCEW Employment (Cut 1) vs First Revised (Cut 2)",
        col="Cut",
        y= "Employment",
-       x= "Date")
+       x= "Date")+ 
+  theme(plot.title = element_text(hjust = 0.5)) 
 
 ```
 
@@ -115,14 +172,14 @@ qcew_revisions %>%
   ggplot(aes(x=date,y=rev)) + 
   geom_line(alpha=.5) + 
   geom_hline(yintercept = 0,col=alpha("black",alpha = .5),linetype = 2)+
+  scale_x_date(breaks = seq.Date(mdy("1-1-2015"),to = mdy("1-1-2024"),by="year"),date_labels = "%Y")+
   scale_y_continuous( labels= scales::comma_format()) + 
   labs(title="QCEW Revisions Cut 1 to Cut 2",
        y= "Revision",
-       x= "Date")
-
+       x= "Date")+ 
+  theme(plot.title = element_text(hjust = 0.5)) 
 
 ```
-
 
 ## Revisions are strictly positive starting in 2021
 
@@ -133,12 +190,110 @@ qcew_revisions %>%
   ggplot(aes(x=date,y=rev)) + 
   geom_line(alpha=.5) + 
   geom_hline(yintercept = 0,col=alpha("black",alpha = .5),linetype = 2)+
+  scale_x_date(breaks = seq.Date(mdy("1-1-2015"),to = mdy("1-1-2024"),by="year"),date_labels = "%Y")+
   scale_y_continuous( labels= scales::comma_format()) + 
   labs(title="QCEW Revisions Cut 1 to Cut 2",
        y= "Revision",
-       x= "Date")
+       x= "Date")+ 
+  theme(plot.title = element_text(hjust = 0.5)) 
 ```
 
-## CES Benchmark Revisions
+## 
 
-* CES sets its "truth" to March of each year
+- If I overlay the difference between Prelim and Final CES revision
+- [red]{style="color:red;"} points are CES differences. **Black** just to highlight March.
+
+```{r, echo=FALSE}
+#plot revisions BUT only highlight march
+cesplot <- qcew_revisions %>%  
+  mutate(rev=cut2-cut1) %>% 
+  ggplot(aes(x=date,y=rev)) + 
+  geom_line(alpha=.5) + 
+  geom_point(aes(x=date,y=rev,shape=if_else(month==3,15,NA) ))+
+  scale_shape_identity()+
+  geom_hline(yintercept = 0,col=alpha("black",alpha = .5),linetype = 2)+
+  scale_x_date(breaks = seq.Date(mdy("1-1-2015"),to = mdy("1-1-2024"),by="year"),date_labels = "%Y")+
+  scale_y_continuous( labels= scales::comma_format()) + 
+  labs(title="QCEW Revisions Cut 1 to Cut 2",
+       y= "Revision",
+       x= "Date") + 
+  geom_point(aes(x=date,y=diff),col="red",size=2,
+             data=ces_revisions %>% filter(year(date)>=2017))+ 
+  theme(plot.title = element_text(hjust = 0.5)) 
+cesplot
+```
+
+## 
+- We can make a good guess at the change in revision from Prelim to Final for this missing point
+
+```{r, echo=F}
+cesplot + geom_segment(aes(x = mdy("9-1-2024"), y = 155e3, xend = mdy("4-1-2024"), yend = 155e3),
+                  arrow = arrow(length = unit(0.5, "cm")),col="red")+ 
+  theme(plot.title = element_text(hjust = 0.5))
+
+```
+
+## This point is also stands out (June 2022)
+
+```{r echo=F}
+#plot revisions BUT only highlight march
+fedplot <- qcew_revisions %>%  
+  mutate(rev=cut2-cut1) %>% 
+  ggplot(aes(x=date,y=rev)) + 
+  geom_line(alpha=.5) + 
+  geom_hline(yintercept = 0,col=alpha("black",alpha = .5),linetype = 2)+
+  scale_x_date(breaks = seq.Date(mdy("1-1-2015"),to = mdy("1-1-2024"),by="year"),date_labels = "%Y")+
+  scale_y_continuous( labels= scales::comma_format()) + 
+  labs(title="QCEW Revisions Cut 1 to Cut 2",
+       y= "Revision",
+       x= "Date") + 
+  geom_segment(aes(x = mdy("6-1-2021"), y = 625e3, xend = mdy("5-1-2022"), yend = 625e3),
+                  arrow = arrow(length = unit(0.5, "cm")),col="red")+ 
+  theme(plot.title = element_text(hjust = 0.5))
+
+fedplot
+
+```
+
+
+## Philadelphia Fed
+
+-   The Philadelphia Fed does quarterly benchmarking to cut 1 of the QCEW
+
+-   In June 2022 they claimed "In the aggregate, 10,500 net new jobs were
+added during the period rather than the
+1,121,500 jobs estimated by the sum of the
+states; the U.S. CES estimated net growth
+of 1,047,000 jobs for the period."
+- Thats a claim that BLS was off by 1 million jobs!
+- [June 2022 Report](https://www.philadelphiafed.org/-/media/frbp/assets/surveys-and-data/benchmark-revisions/2022/early-benchmark-2022-q2-report.pdf)
+
+## This outlier contributed greatly to the error in the fed report 
+
+```{r echo=FALSE}
+fedplot
+```
+
+## June 2022 Outlier
+
+- Further differences between the Fed's number and CES explained by:
+  - subsequent revisions in the QCEW
+  - seasonal adjustment
+- The outlier itself was caused by employers submitting erroneous "third month zeros" when submitting Unemployment Insurance tax data
+
+## June 2022 Outlier
+
+- No smoking gun found but possibilities include:
+  - Calendar effects
+    - When do employees get their paychecks and are they getting counted for that month?
+  - Payroll provider issues
+
+## Conclusions
+
+-   Administrative data can have its own risks
+-   Revisions to the QCEW impact the reliability of the products created by its users
+
+## Presentation Materials
+
+Git repo: https://github.com/kerr14333/employment_revisions 
+Slides: https://rpubs.com/kerr14333/employment-revisions
